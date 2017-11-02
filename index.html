@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="UTF-8">
+      <title>SO SEXY</title>
+</head>
+<body onLoad="init();">
+      <img id="bruce" src="BRUCEY.png" />
+      <img id="steve" src="STEVEY.jpg" />
+
+      <canvas id="faceCanvas">
+      </canvas>
+
+      <script>
+
+      var faceCanvas;
+      var context;
+      var bruceFaceImg;
+      var steveFaceImg;
+      var sweetBeats;
+
+      var faces=[];
+      var numFaces = 5;
+
+      var dx=5;
+      var dy=5;
+
+      var canvasH=0;
+      var canvasW=0;
+
+      var bruceImgPaddedWidth=0;
+      var bruceImgPaddedHeight=0;
+
+      var steveImgWidth=0;
+      var steveImgHeight=0;
+
+      function play() {
+         sweetBeats.currentTime = 0.01;
+         sweetBeats.volume = volume;
+
+         //Due to a bug in Firefox, the audio needs to be played after a delay
+         setTimeout(function(){sweetBeats.play();},1);
+      }
+
+      function init()
+      {
+            var g = document.getElementsByTagName('body')[0];
+
+            var sweetBeats = document.createElement("audio");
+            sweetBeats.preload = "auto";
+
+            //Load the sound file (using a source element for expandability)
+            var src = document.createElement("source");
+            src.src = "SEXY.mp3";
+            sweetBeats.appendChild(src);
+
+            //Load the audio tag
+            //It auto plays as a fallback
+            sweetBeats.load();
+            sweetBeats.volume = 1.000000;
+            sweetBeats.play();
+
+            faceCanvas = document.getElementById("faceCanvas");
+
+            faceCanvas.width = window.innerWidth || document.documentElement.clientWidth || g.clientWidth;
+            faceCanvas.height = window.innerHeight || document.documentElement.clientHeight || g.clientHeight;
+
+            bruceFaceImg = document.getElementById("bruce");
+            steveFaceImg = document.getElementById("steve");
+
+            canvasW = faceCanvas.width;
+            canvasH = faceCanvas.height;
+
+            bruceImgPaddedWidth = canvasW - bruceFaceImg.clientWidth;
+            bruceImgPaddedHeight = canvasH - bruceFaceImg.clientHeight;
+
+            steveImgWidth = steveFaceImg.clientWidth;
+            steveImgHeight = steveFaceImg.clientHeight
+
+            steveFaceImg.style.display = "none";
+            bruceFaceImg.style.display = "none";
+
+            context= faceCanvas.getContext('2d');
+
+            for(var i = 0; i < numFaces; ++i)
+            {
+                  var face = {
+                        x: Math.random() * bruceImgPaddedWidth,
+                        y: Math.random() * bruceImgPaddedHeight,
+                        dx: dx,
+                        dy: dy
+                  };
+
+                  faces.push(face);
+            }
+
+            setInterval(draw,10);
+      }
+
+      function draw()
+      {
+            context.clearRect(0, 0, canvasW, canvasH);
+            
+            //context.drawImage(steveFaceImg, (canvasW / 2) - (steveImgWidth / 2), (canvasH / 2) - (steveImgHeight / 2));
+            context.drawImage(steveFaceImg, (canvasW / 4), (canvasH / 4), (canvasW / 2), (canvasH / 2));
+            //context.drawImage(steveFaceImg, 0, 0, canvasW, canvasH);
+            
+            for(var i = 0; i < faces.length; ++i) 
+            {
+                  var face = faces[i];
+
+                  context.drawImage(bruceFaceImg, face.x, face.y);
+
+                  if( face.x < 0 || face.x > bruceImgPaddedWidth) face.dx =- face.dx; 
+                  if( face.y < 0 || face.y > bruceImgPaddedHeight) face.dy =- face.dy; 
+
+                  face.x += face.dx; 
+                  face.y += face.dy;
+            }
+      }
+
+      </script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-70580903-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+      
+</body>
+</html>
